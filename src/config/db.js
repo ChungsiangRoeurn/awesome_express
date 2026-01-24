@@ -10,9 +10,9 @@ const prisma = new PrismaClient({
 const connectDB = async () => {
   try {
     await prisma.$connect();
-    console.log("Database connected via prisma!");
+    console.log("➡️ Database connected via prisma!🎉");
   } catch (error) {
-    console.error(`Database connection error: ${error.message}`);
+    console.error(`❌ Database connection error: ${error.message}`);
     process.exit(1);
   }
 };
