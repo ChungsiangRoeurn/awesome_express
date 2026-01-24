@@ -1,5 +1,4 @@
 import express from "express";
-// const express = require("express");
 import { config } from "dotenv";
 import { connectDB, disconnectDB } from "./config/db.js";
 
@@ -26,7 +25,7 @@ app.get("/", (req, res) => {
   res.send("Hello, from express without TS");
 });
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server running on 🗿 http://localhost:${PORT}`);
 });
 
