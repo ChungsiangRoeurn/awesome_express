@@ -3,8 +3,8 @@ import { config } from "dotenv";
 import { connectDB, disconnectDB } from "./config/db.js";
 
 import authRoute from "./routes/authRoute.js";
-import watchlistRoute from "./routes/watchlistRoute.js";
-import movieRoute from "./routes/movieRoute.js";
+import walletRoute from "./routes/walletRoute.js";
+import paymentRoute from "./routes/paymentRoute.js";
 
 config();
 connectDB();
@@ -16,10 +16,10 @@ const PORT = 8080;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// DEFINE ROUTES
+// ===========================> DEFINE ROUTES
 app.use("/auth", authRoute);
-app.use("/watchlist", watchlistRoute);
-app.use("/movie", movieRoute);
+app.use("/wallet", walletRoute);
+app.use("/payment", paymentRoute);
 
 app.get("/", (req, res) => {
   res.send("Hello, from express without TS");
