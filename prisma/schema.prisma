@@ -8,53 +8,27 @@ datasource db {
 }
 
 model User {
-  id              String           @id @default(uuid())
-  name            String
-  email           String           @unique
-  password        String
-  createdAt       DateTime         @default(now())
-
-  // Relations
-  movies          Movie[]          @relation("MovieCreator")
-  watchlistItems  WatchlistItem[]
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  wallet    Wallet?
+  createdAt DateTime @default(now())
 }
 
-model Movie {
-  id          String           @id @default(uuid())
-  title       String
-  overview    String?
-  releaseYear Int
-  genres      String[]         @default([])
-  runtime     Int?
-  posterUrl    String?
-  createdBy   String
-  createdAt   DateTime         @default(now())
-
-  // Relations
-  creator         User            @relation("MovieCreator", fields: [createdBy], references: [id], onDelete: Cascade)
-  watchlistItems  WatchlistItem[]
+model Wallet {
+  id      String @id @default(uuid())
+  balance Float  @default(0)
+  userId  String @unique
+  user    User   @relation(fields: [userId], references: [id])
 }
 
-enum WatchlistStatus {
-  PLANNED
-  WATCHING
-  COMPLETED
-  DROPPED
-}
-
-model WatchlistItem {
-  id        String           @id @default(uuid())
+model Transaction {
+  id        String   @id @default(uuid())
   userId    String
-  movieId   String
-  status    WatchlistStatus  @default(PLANNED)
-  rating    Int?
-  notes     String?
-  createdAt DateTime         @default(now())
-  updatedAt DateTime         @default(now())
-
-  // Relations
-  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  movie     Movie            @relation(fields: [movieId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, movieId])
+  amount    Float
+  status    String   // PENDING, SUCCESS, FAILED
+  type      String   // TOPUP
+  reference String?  // Bakong ref
+  createdAt DateTime @default(now())
 }

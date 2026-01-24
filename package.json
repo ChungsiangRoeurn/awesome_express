@@ -1,5 +1,5 @@
 {
-  "name": "js-api",
+  "name": "e-wallet",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
@@ -17,6 +17,7 @@
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
+    "uuid": "^13.0.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {
