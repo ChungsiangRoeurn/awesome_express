@@ -8,11 +8,8 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 4455;
 
+// ======= Define all routes =======
 app.use("/api", router);
-
-app.get("/", (req, res) => {
-  res.send("Hello, from expressjs!");
-});
 
 const server = app.listen(PORT, () => {
   console.log(`Server running on 🗿 http://localhost:${PORT}`);
@@ -32,6 +29,19 @@ const shutdown = async (signal) => {
     process.exit(0);
   });
 };
+
+// GLOBAL ERROR MIDDLEWARE
+app.use((err, req, res, next) => {
+  const message = err.message || "Internal Server Error";
+  const statusCode = message.includes("not found") ? 404 : 400;
+
+  console.error(`[ERROR]: ${message}`);
+
+  res.status(statusCode).json({
+    success: false,
+    message: message,
+  });
+});
 
 process.on("SIGTERM", () => shutdown("SIGTERM"));
 process.on("SIGINT", () => shutdown("SIGINT"));
