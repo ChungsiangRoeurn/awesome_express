@@ -1,26 +1,19 @@
 {
-  "name": "e-wallet",
+  "name": "author",
   "version": "1.0.0",
-  "main": "server.js",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
   "scripts": {
-    "dev": "node --watch src/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "seed": "node prisma/seed.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "packageManager": "pnpm@10.28.0",
   "dependencies": {
-    "@prisma/client": "^6.19.0",
-    "bcryptjs": "^3.0.3",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
-    "jsonwebtoken": "^9.0.3",
-    "uuid": "^13.0.0",
-    "zod": "^4.3.6"
-  },
-  "devDependencies": {
-    "prisma": "^6.19.0"
+    "mysql2": "^3.16.2"
   }
 }
