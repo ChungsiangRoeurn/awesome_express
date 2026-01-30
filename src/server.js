@@ -1,55 +1,37 @@
+import "dotenv/config";
 import express from "express";
-import { config } from "dotenv";
-import { connectDB, disconnectDB } from "./config/db.js";
-
-import authRoute from "./routes/authRoute.js";
-import walletRoute from "./routes/walletRoute.js";
-import paymentRoute from "./routes/paymentRoute.js";
-
-config();
-connectDB();
+import { db } from "../src/lib/db.js";
+import { router } from "./routes/index.js";
 
 const app = express();
-const PORT = 8080;
-
-// Body parsing json request
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-// ===========================> DEFINE ROUTES
-app.use("/auth", authRoute);
-app.use("/wallet", walletRoute);
-app.use("/payment", paymentRoute);
+const PORT = process.env.PORT || 4455;
+
+app.use("/api", router);
 
 app.get("/", (req, res) => {
-  res.send("Hello, from express without TS");
+  res.send("Hello, from expressjs!");
 });
 
 const server = app.listen(PORT, () => {
   console.log(`Server running on 🗿 http://localhost:${PORT}`);
 });
 
-// Handle unhandled promise rejections (e.g., database connection errors)
-process.on("unhandledRejection", (err) => {
-  console.error("Unhandled Rejection:", err);
-  server.close(async () => {
-    await disconnectDB();
-    process.exit(1);
-  });
-});
-
-// Handle uncaught exceptions
-process.on("uncaughtException", async (err) => {
-  console.error("Uncaught Exception:", err);
-  await disconnectDB();
-  process.exit(1);
-});
-
 // Graceful shutdown
-process.on("SIGTERM", async () => {
-  console.log("SIGTERM received, shutting down gracefully");
-  server.close(async () => {
-    await disconnectDB();
+const disconnectDB = () =>
+  new Promise((resolve, reject) => {
+    db.end((err) => (err ? reject(err) : resolve()));
+  });
+
+const shutdown = async (signal) => {
+  console.log(`${signal} received, shutting down...`);
+  await disconnectDB();
+  server.close(() => {
+    console.log("Process terminated");
     process.exit(0);
   });
-});
+};
+
+process.on("SIGTERM", () => shutdown("SIGTERM"));
+process.on("SIGINT", () => shutdown("SIGINT"));
