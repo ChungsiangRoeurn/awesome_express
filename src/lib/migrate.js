@@ -12,7 +12,7 @@ async function migrate() {
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    multipleStatements: true, // Crucial for running multiple SQL commands
+    multipleStatements: true,
   });
 
   try {
@@ -22,7 +22,7 @@ async function migrate() {
     await connection.query(schema);
     console.log("✅ Migration successful: Tables created!");
 
-    // Optional: Run seed if you want
+    // Run seed here
     const seedPath = path.join(__dirname, "seed.sql");
     if (fs.existsSync(seedPath)) {
       const seed = fs.readFileSync(seedPath, "utf8");
